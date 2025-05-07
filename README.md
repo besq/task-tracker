@@ -1,2 +1,3 @@
-# task-tracker
-Task Tracker (roadmap.sh/projects/task-tracker)
+# Task Tracker
+
+https://roadmap.sh/projects/task-tracker
