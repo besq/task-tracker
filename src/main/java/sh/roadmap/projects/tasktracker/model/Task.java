@@ -1,25 +1,34 @@
 package sh.roadmap.projects.tasktracker.model;
 
 import java.time.LocalDateTime;
-import java.util.concurrent.atomic.AtomicInteger;
 
-import org.springframework.format.annotation.DateTimeFormat;
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonFormat.Shape;
 
+import lombok.AllArgsConstructor;
+import lombok.NoArgsConstructor;
+
+import com.fasterxml.jackson.annotation.JsonValue;
+
+@NoArgsConstructor
+@AllArgsConstructor
 public class Task {
 
-    private static final AtomicInteger idCounter = new AtomicInteger(1);
-
-    private Integer id = idCounter.getAndIncrement();
+    private Integer id;
     private String description;
     private Status status = Status.TODO;
 
-    @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
+    // @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
+    @JsonFormat(shape = Shape.STRING, pattern = "yyyy-MM-dd HH:mm:ss")
     private LocalDateTime createdAt = LocalDateTime.now();
 
-    @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
-    private LocalDateTime updatedAt = LocalDateTime.now();
+    // @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
+    @JsonFormat(shape = Shape.STRING, pattern = "yyyy-MM-dd HH:mm:ss")
+    private LocalDateTime updatedAt;
 
-    public Task(String description) {
+    public Task(Integer id, String description) {
+        this.id = id;
         this.description = description;
     }
 
@@ -85,12 +94,24 @@ enum Status {
         this.value = value;
     }
 
+    @JsonValue
     public String getValue() {
         return value;
+    }
+
+    @JsonCreator
+    public static Status fromValue(String value) {
+        for (Status status : Status.values()) {
+            if (status.getValue().equalsIgnoreCase(value)) {
+                return status;
+            }
+        }
+        throw new IllegalArgumentException("Invalid status value: " + value);
     }
 
     @Override
     public String toString() {
         return value;
     }
+
 }

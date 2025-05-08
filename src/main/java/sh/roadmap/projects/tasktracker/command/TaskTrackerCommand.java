@@ -17,7 +17,7 @@ public class TaskTrackerCommand {
 
     @Command(command = "add", description = "Add a new task.")
     public String add(@NotBlank String taskDescription) {
-        Task task = taskService.createTask(taskDescription);
+        Task task = taskService.addTask(taskDescription);
         if (task == null) {
             return "Failed to add task.";
         }
