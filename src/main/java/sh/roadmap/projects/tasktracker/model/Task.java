@@ -7,7 +7,7 @@ import org.springframework.format.annotation.DateTimeFormat;
 
 public class Task {
 
-    private static final AtomicInteger idCounter = new AtomicInteger(0);
+    private static final AtomicInteger idCounter = new AtomicInteger(1);
 
     private Integer id = idCounter.getAndIncrement();
     private String description;
