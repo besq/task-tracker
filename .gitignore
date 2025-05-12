@@ -3,7 +3,6 @@ task-tracker.log
 data
 
 ### Java ###
-HELP.md
 target/
 !.mvn/wrapper/maven-wrapper.jar
 !**/src/main/**/target/
