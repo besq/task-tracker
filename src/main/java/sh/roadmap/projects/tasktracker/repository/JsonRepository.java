@@ -67,12 +67,13 @@ public class JsonRepository<T, ID> {
                 .findFirst();
     }
 
-    public synchronized void save(T entity) {
+    public synchronized T save(T entity) {
         List<T> entities = findAll();
         ID entityId = idGetter.apply(entity);
         entities.removeIf(e -> Objects.equals(idGetter.apply(e), entityId));
         entities.add(entity);
         writeAll(entities);
+        return entity;
     }
 
     public synchronized void deleteById(ID id) {

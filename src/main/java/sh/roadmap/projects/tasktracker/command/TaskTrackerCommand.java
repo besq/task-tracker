@@ -2,7 +2,9 @@ package sh.roadmap.projects.tasktracker.command;
 
 import org.springframework.shell.command.annotation.Command;
 
+import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Positive;
 import sh.roadmap.projects.tasktracker.model.Task;
 import sh.roadmap.projects.tasktracker.service.TaskService;
 
@@ -16,29 +18,15 @@ public class TaskTrackerCommand {
     }
 
     @Command(command = "add", description = "Add a new task.")
-    public String add(@NotBlank String taskDescription) {
+    public String add(String taskDescription) {
         Task task = taskService.addTask(taskDescription);
-        if (task == null) {
-            return "Failed to add task.";
-        }
         return "Task added successfully (ID: " + task.getId() + ")";
     }
 
-    // @Command(command = "update", description = "Update an existing task")
-    // public String update(String taskId, String newDescription) {
-
-    //     if (taskId == null || taskId.isEmpty()) {
-    //         return "Task ID cannot be null or empty.";
-    //     }
-    //     if (newDescription == null || newDescription.isEmpty()) {
-    //         return "New description cannot be null or empty.";
-    //     }
-
-    //     Task updatedTask = taskService.updateTask(taskId, newDescription);
-    //     if (updatedTask == null) {
-    //         return "Task not found (ID: " + taskId + ")";
-    //     }
-    //     System.out.println("Task updated successfully: " + updatedTask.toString());
-    //     return "Task updated successfully (ID: " + updatedTask.getId() + ")";
-    // }
+    // command update
+    @Command(command = "update", description = "Update an existing task.")
+    public String update(@Positive @Min(1) Integer id, @NotBlank String newDescription) {
+        Task task = taskService.updateTask(id, newDescription);
+        return "Task updated successfully (ID: " + task.getId() + ")";
+    }
 }
